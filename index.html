@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Containerization and DevOps Assignment - Raghav Malik</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* CUSTOMIZE THESE COLORS */
+            --primary: #0f172a;        /* Dark background */
+            --secondary: #1e293b;      /* Slightly lighter background */
+            --accent: #3b82f6;         /* Main accent (try #f97316 for orange, #ec4899 for pink) */
+            --accent-bright: #60a5fa;  /* Lighter version of accent */
+            --success: #10b981;        /* Green for success */
+            --text-primary: #f1f5f9;   /* Main text color */
+            --text-secondary: #cbd5e1; /* Secondary text color */
+            --border: #334155;         /* Border color */
+            --bg-light: #1a202c;       /* Light background */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--bg-light) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ============ NAVIGATION ============ */
+        nav {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-bright);
+            text-decoration: none;
+        }
+
+        /* ============ CONTAINER ============ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* ============ HERO SECTION ============ */
+        .hero {
+            padding: 4rem 2rem;
+            text-align: center;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-bright) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .meta-item strong {
+            color: var(--accent-bright);
+        }
+
+        /* ============ QUICK ACCESS CARDS ============ */
+        .quick-access {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .quick-card {
+            background: linear-gradient(135deg, var(--secondary) 0%, rgba(30, 41, 59, 0.5) 100%);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .quick-card:hover {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(30, 41, 59, 0.5) 100%);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
+        }
+
+        .quick-card-icon {
+            font-size: 2rem;
+        }
+
+        .quick-card h3 {
+            color: var(--accent-bright);
+            font-size: 1.1rem;
+        }
+
+        .quick-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .quick-card-link {
+            color: var(--accent);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            margin-top: auto;
+        }
+
+        .quick-card-link:hover {
+            color: var(--accent-bright);
+        }
+
+        /* ============ REPORT SECTION ============ */
+        .report-section {
+            margin: 3rem 0;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .report-section h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--accent-bright);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .report-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .report-card:hover {
+            border-color: var(--accent);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .report-card h3 {
+            color: var(--accent-bright);
+            margin-bottom: 0.5rem;
+        }
+
+        .report-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* ============ TECH STACK ============ */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 3rem 0;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .tech-tag {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent-bright);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        /* ============ INSTRUCTIONS ============ */
+        .instructions {
+            background: rgba(30, 41, 59, 0.7);
+            border-left: 4px solid var(--accent);
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 3rem 0;
+            animation: fadeInUp 0.8s ease-out 0.7s both;
+        }
+
+        .instructions h2 {
+            color: var(--accent-bright);
+            margin-bottom: 1.5rem;
+        }
+
+        .instructions ol {
+            margin-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .instructions li {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .instructions strong {
+            color: var(--accent-bright);
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            margin-top: 4rem;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--accent-bright);
+        }
+
+        /* ============ ANIMATIONS ============ */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .meta-info {
+                gap: 1rem;
+            }
+
+            .quick-access {
+                grid-template-columns: 1fr;
+            }
+
+            .report-section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ========== NAVIGATION ========== -->
+    <nav>
+        <div class="container">
+            <!-- CUSTOMIZE: Change the emoji and text to your project -->
+            <a href="#" class="logo">📌 My Project</a>
+        </div>
+    </nav>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <main class="container">
+        
+        <!-- ========== HERO SECTION ========== -->
+        <section class="hero">
+            <!-- CUSTOMIZE: Your project title -->
+            <h1>Your Project Title Here</h1>
+            
+            <!-- CUSTOMIZE: One-line project description -->
+            <p>Add your project description here. This is where you tell visitors what your project is about in one compelling sentence.</p>
+            
+            <!-- CUSTOMIZE: Your name, date, and main technology -->
+            <div class="meta-info">
+                <div class="meta-item">
+                    <strong>👤 Your Name</strong>
+                </div>
+                <div class="meta-item">
+                    <strong>📅 Month 2026</strong>
+                </div>
+                <div class="meta-item">
+                    <strong>🔧 Your Tech Stack</strong>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== QUICK ACCESS CARDS ========== -->
+        <section class="quick-access">
+            
+            <!-- CARD 1: GitHub Repository -->
+            <!-- CUSTOMIZE: Replace the URL with YOUR GitHub repository -->
+            <a href="https://github.com/yourusername/Project-Assignment-1" class="quick-card" target="_blank">
+                <div class="quick-card-icon">🐙</div>
+                <h3>GitHub Repository</h3>
+                <p>Source code — Dockerfile, docker-compose.yml, backend, database scripts, screenshots.</p>
+                <div class="quick-card-link">Open Repo →</div>
+            </a>
+
+            <!-- CARD 2: PDF Report -->
+            <!-- CUSTOMIZE: Replace the URL with YOUR PDF report on GitHub -->
+            <a href="https://github.com/yourusername/Project-Assignment-1/blob/main/Project_Report.pdf" class="quick-card" target="_blank">
+                <div class="quick-card-icon">📄</div>
+                <h3>PDF Report</h3>
+                <p>Full formatted report with diagrams, screenshots, and analysis. Opens in browser or download.</p>
+                <div class="quick-card-link">Open PDF →</div>
+            </a>
+
+            <!-- CARD 3: Markdown Report -->
+            <!-- CUSTOMIZE: Replace the URL with YOUR README or REPORT.md on GitHub -->
+            <a href="https://github.com/yourusername/Project-Assignment-1/blob/main/README.md" class="quick-card" target="_blank">
+                <div class="quick-card-icon">📝</div>
+                <h3>Markdown Report</h3>
+                <p>README.md — readable directly on GitHub with all sections and formatted content.</p>
+                <div class="quick-card-link">Read Report →</div>
+            </a>
+
+            <!-- CARD 4: Screenshots -->
+            <!-- CUSTOMIZE: Replace the URL with YOUR screenshots folder on GitHub -->
+            <a href="https://github.com/yourusername/Project-Assignment-1/tree/main/Screenshots" class="quick-card" target="_blank">
+                <div class="quick-card-icon">🖼️</div>
+                <h3>Screenshots & Demos</h3>
+                <p>Container IPs, Docker network inspect, volume persistence test — visual proof of all tasks.</p>
+                <div class="quick-card-link">View Screenshots →</div>
+            </a>
+
+        </section>
+
+        <!-- ========== WHAT'S INSIDE THE REPORT ========== -->
+        <section class="report-section">
+            <h2>📚 What's Inside the Report</h2>
+            
+            <!-- CUSTOMIZE: Update these 6 sections with YOUR project content -->
+            <div class="grid-2">
+                
+                <div class="report-card">
+                    <h3>1. Introduction</h3>
+                    <p>Project overview, goals, and two-service architecture</p>
+                </div>
+
+                <div class="report-card">
+                    <h3>2. System Architecture</h3>
+                    <p>Backend + PostgreSQL design with Docker Compose</p>
+                </div>
+
+                <div class="report-card">
+                    <h3>3. Multi-Stage Build Optimization</h3>
+                    <p>Reducing image size from ~900 MB to ~150 MB</p>
+                </div>
+
+                <div class="report-card">
+                    <h3>4. Network Design</h3>
+                    <p>Bridge, IPvlan, and Macvlan — setup and comparison</p>
+                </div>
+
+                <div class="report-card">
+                    <h3>5. Image Size Comparison</h3>
+                    <p>Before/after metrics for multi-stage optimization</p>
+                </div>
+
+                <div class="report-card">
+                    <h3>6. Conclusion</h3>
+                    <p>Key outcomes and learnings</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========== HOW TO ACCESS FILES ========== -->
+        <section class="instructions">
+            <h2>🚀 How to Access the Files</h2>
+            
+            <!-- CUSTOMIZE: Update these instructions for YOUR project -->
+            <ol>
+                <li><strong>Open the PDF Report:</strong> Click <strong>"Open PDF Report"</strong> above — opens in your browser. Save it with <code>Ctrl+S</code> or <code>Cmd+S</code>.</li>
+                <li><strong>Read the Markdown Report:</strong> Click <strong>"Read Markdown"</strong> — the <code>README.md</code> file opens formatted on GitHub. No download needed.</li>
+                <li><strong>Browse Source Code:</strong> Click <strong>"View on GitHub"</strong> to explore Dockerfiles, compose config, backend code, and screenshots.</li>
+                <li><strong>Run It Locally:</strong> Clone the repo and run <code>docker compose up --build</code> — app starts at <code>localhost:3000</code>.</li>
+            </ol>
+        </section>
+
+        <!-- ========== TECHNOLOGIES USED ========== -->
+        <section style="text-align: center; margin: 3rem 0; animation: fadeInUp 0.8s ease-out 0.8s both;">
+            <h2 style="color: var(--accent-bright); margin-bottom: 1.5rem;">⚙️ Technologies Used</h2>
+            
+            <!-- CUSTOMIZE: Replace these with YOUR actual technologies -->
+            <div class="tech-stack">
+                <div class="tech-tag">🐳 Docker</div>
+                <div class="tech-tag">🔧 Docker Compose</div>
+                <div class="tech-tag">🗄️ PostgreSQL 15</div>
+                <div class="tech-tag">⚡ Node.js 18</div>
+                <div class="tech-tag">🚀 Express.js</div>
+                <div class="tech-tag">🏗️ Multi-Stage Build</div>
+                <div class="tech-tag">🌐 IPvlan</div>
+                <div class="tech-tag">🔗 Macvlan</div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer>
+        <!-- CUSTOMIZE: Add YOUR name and portfolio link -->
+        <p>Made by <strong>Your Name</strong> · <a href="https://github.com/yourusername">GitHub Profile</a> · 2026</p>
+        <p style="margin-top: 0.5rem; color: var(--text-secondary);">
+            © 2026 Your Project. All rights reserved.
+        </p>
+    </footer>
+
+</body>
+</html>
+
+<!-- 
+    ==================== QUICK CUSTOMIZATION GUIDE ====================
+    
+    Find and replace these placeholders:
+    
+    1. "Your Project Title Here" → Your actual project name
+    2. "Your Name" → Your actual name
+    3. "Month 2026" → Actual date (March 2026, etc)
+    4. "Your Tech Stack" → Your main technologies
+    5. "yourusername" → Your GitHub username (3 places)
+    6. "Project-Assignment-1" → Your repository name
+    7. Update all 6 report card titles and descriptions
+    8. Update technology tags at the bottom
+    9. Add your GitHub and portfolio links in footer
+    
+    For more customization options, see DEPLOYMENT_GUIDE.md
+    
+    ====================================================================
+-->
